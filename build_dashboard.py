@@ -363,11 +363,11 @@ def render_dashboard(records: list[StepRecord], summaries: list[WeeklySummary]) 
     .chart-card,.mini-card,.rank-card,.champion-row {{ background:#fff; border:1px solid var(--line); border-radius:8px; }}
     .chart-card {{ padding:16px; }} .chart-head {{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:14px; }}
     .chart-head h3 {{ margin:0; font-size:1.08rem; }} .chart-head span {{ color:var(--muted); font-weight:800; font-size:.9rem; }}
-    .day-list {{ display:grid; gap:12px; }} .day-row {{ display:grid; grid-template-columns:92px minmax(0,1fr) 62px; gap:12px; align-items:center; }}
+    .day-list {{ display:grid; gap:12px; }} .day-row {{ display:grid; grid-template-columns:96px minmax(120px,1fr) 54px; gap:10px; align-items:center; }}
     .day-meta strong {{ display:block; font-size:.95rem; }} .day-meta span {{ display:block; color:var(--muted); font-size:.78rem; margin-top:2px; white-space:nowrap; }}
     .goal-track {{ height:18px; min-width:0; border-radius:999px; background:linear-gradient(90deg,#e3eee8,#f8fbf9); border:1px solid #d3dfda; overflow:hidden; box-shadow:inset 0 1px 3px rgba(36,50,56,.08); }}
     .actual-fill {{ height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--green),var(--blue)); box-shadow:0 4px 10px rgba(79,157,105,.18); }} .is-miss .actual-fill {{ background:linear-gradient(90deg,var(--coral),#f1a064); }}
-    .day-badge {{ justify-self:end; padding:5px 8px; border-radius:999px; background:#e8f5ec; color:#357950; font-size:.78rem; font-weight:900; }} .is-miss .day-badge {{ background:#fff0ec; color:#c25e51; }}
+    .day-badge {{ justify-self:end; min-width:48px; padding:5px 7px; border-radius:999px; background:#e8f5ec; color:#357950; font-size:.72rem; line-height:1; font-weight:900; text-align:center; white-space:nowrap; }} .is-miss .day-badge {{ background:#fff0ec; color:#c25e51; }}
     .champion-list,.mini-grid {{ display:grid; gap:12px; }} .champion-row {{ display:grid; grid-template-columns:150px minmax(0,1fr) 56px; gap:14px; align-items:center; background:linear-gradient(135deg,#fff,#fbfdf9); padding:14px; }}
     .champion-person {{ display:flex; align-items:center; gap:8px; min-width:0; }} .crown,.crown-spacer {{ width:24px; flex:0 0 24px; text-align:center; }} .crown {{ color:var(--gold); font-size:1.35rem; line-height:1; text-shadow:0 2px 0 rgba(36,50,56,.12); }}
     .champion-meter {{ position:relative; height:24px; overflow:hidden; border-radius:999px; background:#eef5f1; border:1px solid #d2dfd9; box-shadow:inset 0 1px 4px rgba(36,50,56,.08); }} .champion-fill {{ position:absolute; inset:0 auto 0 0; border-radius:inherit; background:linear-gradient(90deg,#f5bd3d 0%,#65ad79 52%,#5d93c8 100%); box-shadow:0 5px 14px rgba(93,147,200,.22); }}
@@ -375,7 +375,7 @@ def render_dashboard(records: list[StepRecord], summaries: list[WeeklySummary]) 
     .mini-card {{ padding:14px; }} .mini-card strong {{ display:block; margin-top:6px; font-size:1.2rem; }} .table-wrap {{ overflow-x:auto; }}
     table {{ width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; }} th,td {{ padding:12px 14px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap; font-size:.92rem; }} th {{ background:#f1f7f3; color:#3d555d; }}
     footer {{ margin-top:16px; color:var(--muted); font-size:.86rem; line-height:1.6; }}
-    @media (max-width:820px) {{ main {{ width:min(100% - 20px,680px); padding-top:12px; }} .hero,.grid,.headline,.chart-grid {{ grid-template-columns:1fr; }} .day-row {{ grid-template-columns:76px minmax(0,1fr); }} .day-badge {{ grid-column:2; justify-self:start; }} .champion-row {{ grid-template-columns:1fr; gap:10px; }} .champion-row b {{ justify-self:start; }} .pig {{ width:96px; justify-self:start; }} .rank-line {{ display:block; }} th,td {{ padding:10px 12px; }} }}
+    @media (max-width:820px) {{ main {{ width:min(100% - 20px,680px); padding-top:12px; }} .hero,.grid,.headline,.chart-grid {{ grid-template-columns:1fr; }} .day-row {{ grid-template-columns:82px minmax(96px,1fr) 50px; gap:8px; }} .day-meta span {{ font-size:.72rem; }} .day-badge {{ min-width:46px; padding-inline:6px; font-size:.68rem; }} .champion-row {{ grid-template-columns:1fr; gap:10px; }} .champion-row b {{ justify-self:start; }} .pig {{ width:96px; justify-self:start; }} .rank-line {{ display:block; }} th,td {{ padding:10px 12px; }} }}
   </style>
 </head>
 <body>

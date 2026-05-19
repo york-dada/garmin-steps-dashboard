@@ -7,6 +7,7 @@ on:
       - master
     paths:
       - "data/raw/**"
+      - "site/assets/**"
       - "build_dashboard.py"
       - ".github/workflows/build-and-deploy.yml"
   schedule:

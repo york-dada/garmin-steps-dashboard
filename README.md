@@ -46,6 +46,7 @@ site/index.html
 - `data/raw/**` 有新的 CSV
 - `build_dashboard.py` 有更新
 - `site/assets/**` 有更新
+- 每天 00:00 UTC 固定跑一次
 - 手動從 GitHub Actions 執行 `workflow_dispatch`
 
 公開頁面只顯示彙整後的 dashboard，不會直接列出原始 CSV 內容。

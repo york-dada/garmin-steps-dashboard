@@ -276,10 +276,11 @@ def render_html(records: list[StepRecord], summaries: list[dict[str, object]]) -
     main {{ width:min(1120px,calc(100% - 28px)); margin:0 auto; padding:24px 0 42px; }}
     .hero {{ display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:16px; align-items:stretch; }}
     .panel {{ background:var(--panel); border:1px solid rgba(36,50,56,.1); border-radius:8px; box-shadow:0 18px 50px rgba(48,72,68,.12); }}
-    .headline {{ padding:clamp(24px,5vw,48px); }}
+    .headline {{ padding:clamp(24px,5vw,48px); display:grid; grid-template-columns:minmax(0,1fr) 150px; gap:24px; align-items:center; }}
     .eyebrow {{ color:var(--coral); font-size:.82rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }}
     h1 {{ margin:10px 0 14px; font-size:clamp(2rem,5vw,4rem); line-height:1; letter-spacing:0; }}
     .lede {{ margin:0; max-width:60ch; color:var(--muted); font-size:1.03rem; line-height:1.7; }}
+    .mascot {{ width:min(150px,100%); justify-self:end; filter:drop-shadow(0 18px 22px rgba(95,67,54,.2)); }}
     .stats {{ display:grid; gap:12px; padding:14px; }}
     .stat {{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:16px; }}
     .stat span,.mini-card span {{ display:block; color:var(--muted); font-size:.88rem; font-weight:800; }}
@@ -294,13 +295,13 @@ def render_html(records: list[StepRecord], summaries: list[dict[str, object]]) -
     .mini-grid {{ display:grid; gap:10px; }} .mini-card {{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:14px; }} .mini-card strong {{ display:block; margin-top:6px; font-size:1.2rem; }}
     .table-wrap {{ overflow-x:auto; }} table {{ width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; }} th,td {{ padding:12px 14px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap; font-size:.92rem; }} th {{ background:#f1f7f3; color:#3d555d; }}
     footer {{ margin-top:16px; color:var(--muted); font-size:.86rem; line-height:1.6; }}
-    @media (max-width:820px) {{ main {{ width:min(100% - 20px,680px); padding-top:12px; }} .hero,.grid {{ grid-template-columns:1fr; }} .rank-line {{ display:block; }} th,td {{ padding:10px 12px; }} }}
+    @media (max-width:820px) {{ main {{ width:min(100% - 20px,680px); padding-top:12px; }} .hero,.grid,.headline {{ grid-template-columns:1fr; }} .mascot {{ width:96px; justify-self:start; }} .rank-line {{ display:block; }} th,td {{ padding:10px 12px; }} }}
   </style>
 </head>
 <body>
   <main>
     <section class="hero">
-      <div class="panel headline"><span class="eyebrow">Family Steps</span><h1>Garmin 步數儀表板</h1><p class="lede">CSV 手動上傳到 GitHub 後，雲端會自動重建這個頁面。資料來源只採用彙整後結果，不公開原始 CSV 內容。</p></div>
+      <div class="panel headline"><div><span class="eyebrow">Family Steps</span><h1>Garmin 步數儀表板</h1><p class="lede">CSV 手動上傳到 GitHub 後，雲端會自動重建這個頁面。資料來源只採用彙整後結果，不公開原始 CSV 內容。</p></div><img class="mascot" src="assets/pig.svg" alt="步數儀表板插圖"></div>
       <aside class="panel stats"><div class="stat"><span>最新週次</span><strong>{html.escape(latest_week_label)}</strong></div><div class="stat"><span>本週總步數</span><strong>{number(total_latest_steps)} 步</strong></div><div class="stat"><span>本週第一名</span><strong>{html.escape(winner)}</strong></div></aside>
     </section>
     <section class="grid"><div class="panel section"><h2>本週排行榜</h2>{leaderboard or '<p>尚無排行榜資料。</p>'}</div><div class="panel section"><h2>{html.escape(latest_month or '最新月份')} 月累計</h2><div class="mini-grid">{month_cards or '<p>尚無月統計資料。</p>'}</div></div></section>

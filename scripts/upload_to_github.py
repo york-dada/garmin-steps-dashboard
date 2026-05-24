@@ -75,6 +75,20 @@ def staged_changes() -> bool:
     return bool(git_output(["diff", "--cached", "--name-only"]))
 
 
+def validate_upload_target() -> str:
+    branch = git_output(["branch", "--show-current"])
+    if not branch:
+        raise RuntimeError("Could not determine the current Git branch.")
+    if branch not in {"main", "master"}:
+        raise RuntimeError(f"目前在 {branch} 分支，請切回 main 後再上傳，否則 dashboard 不會更新。")
+
+    remotes = set(git_output(["remote"]).splitlines())
+    if "origin" not in remotes:
+        raise RuntimeError("找不到 Git remote origin，無法上傳到 GitHub。")
+
+    return branch
+
+
 def make_commit_message() -> str:
     names = []
     today = dt.date.today().isoformat()
@@ -124,6 +138,8 @@ def main() -> int:
         print(git_output(["status", "--short", "--", *STAGE_PATHS]))
         print()
 
+        branch = validate_upload_target()
+
         run(["git", "add", *STAGE_PATHS])
         if not staged_changes():
             print("No staged changes after git add.")
@@ -131,12 +147,6 @@ def main() -> int:
 
         commit_message = make_commit_message()
         run(["git", "commit", "-m", commit_message])
-
-        branch = git_output(["branch", "--show-current"])
-        if not branch:
-            raise RuntimeError("Could not determine the current Git branch.")
-        if branch not in {"main", "master"}:
-            raise RuntimeError(f"目前在 {branch} 分支，請切回 main 後再上傳，否則 dashboard 不會更新。")
 
         run(["git", "push", "origin", branch])
         print()

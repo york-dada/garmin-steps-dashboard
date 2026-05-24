@@ -24,14 +24,16 @@ def find_repo_root() -> Path:
 
 ROOT = find_repo_root()
 STAGE_PATHS = [
+    "README.md",
+    "GarminUploadToGitHub.exe",
     "data/raw",
     "build_dashboard.py",
     "site/assets",
     ".github/workflows/build-and-deploy.yml",
     ".gitignore",
     "scripts/upload_to_github.py",
-    "upload_to_github.bat",
-    "build_upload_exe.bat",
+    "scripts/dev/upload_to_github.bat",
+    "scripts/dev/build_upload_exe.bat",
 ]
 
 
@@ -95,7 +97,8 @@ def main() -> int:
         run([python_command(), "build_dashboard.py"])
 
         if not has_changes():
-            print("No data/dashboard source changes to upload.")
+            print("No CSV or dashboard source changes found.")
+            print("Nothing was uploaded to GitHub.")
             return 0
 
         print()
@@ -128,4 +131,7 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    exit_code = main()
+    if getattr(sys, "frozen", False):
+        input("\nPress Enter to close this window...")
+    raise SystemExit(exit_code)

@@ -18,8 +18,8 @@ https://york-dada.github.io/garmin-steps-dashboard/
 4. 雙擊執行：
    - `GarminUploadToGitHub.exe`
 5. 等黑色視窗跑完。
-6. 看到 `Done. Uploaded commit to origin/main.` 就代表已經上傳到 GitHub。
-7. 如果看到 `No CSV or dashboard source changes found.`，代表沒有偵測到新資料，所以不會上傳。
+6. 看到 `完成，上傳到 origin/main 了。` 就代表已經上傳到 GitHub。
+7. 如果看到 `沒有偵測到新的 CSV 或 dashboard 相關變更。`，代表沒有偵測到新資料，所以不會上傳。
 8. 看完訊息後，按 Enter 關閉視窗。
 9. 如果有上傳，等 GitHub 自動更新網頁，通常約 1 到 3 分鐘。
 10. 到這裡看結果：
@@ -80,9 +80,10 @@ GarminUploadToGitHub.exe
 雙擊 `GarminUploadToGitHub.exe` 後，黑色視窗最後如果看到類似這段：
 
 ```text
-Done. Uploaded commit to origin/main.
-GitHub Actions will rebuild and publish the dashboard from the uploaded data.
-Press Enter to close this window...
+完成，上傳到 origin/main 了。
+GitHub 會自動更新 dashboard，通常約 1 到 3 分鐘。
+查看結果: https://york-dada.github.io/garmin-steps-dashboard/
+看完訊息後，按 Enter 關閉視窗...
 ```
 
 代表 CSV 已經成功上傳到 GitHub。
@@ -95,7 +96,7 @@ https://york-dada.github.io/garmin-steps-dashboard/
 
 ## 如果看到錯誤
 
-如果黑色視窗最後出現 `Upload failed`，代表沒有成功上傳。
+如果黑色視窗最後出現 `上傳失敗`，代表沒有成功上傳。
 
 常見原因：
 

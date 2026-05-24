@@ -13,5 +13,8 @@ if errorlevel 1 (
 )
 copy /Y dist\GarminUploadToGitHub.exe GarminUploadToGitHub.exe >nul
 echo Updated GarminUploadToGitHub.exe in the project root.
+rmdir /S /Q build 2>nul
+rmdir /S /Q dist 2>nul
+del /Q GarminUploadToGitHub.spec 2>nul
 echo.
 pause

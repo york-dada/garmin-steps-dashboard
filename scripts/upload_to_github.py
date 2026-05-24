@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime as dt
-import shutil
+import importlib.util
 import subprocess
 import sys
 from pathlib import Path
@@ -80,29 +80,38 @@ def make_commit_message() -> str:
     return f"Update {people} data for {today}"
 
 
-def python_command() -> str:
-    if not getattr(sys, "frozen", False):
-        return sys.executable
+def build_dashboard() -> None:
+    script_path = ROOT / "build_dashboard.py"
+    if not script_path.exists():
+        raise FileNotFoundError(f"Missing {script_path}")
 
-    return shutil.which("python") or shutil.which("py") or "python"
+    print("> build dashboard")
+    sys.dont_write_bytecode = True
+    spec = importlib.util.spec_from_file_location("garmin_dashboard_build", script_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Could not load {script_path}")
+
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.main()
 
 
 def main() -> int:
-    print("Garmin dashboard GitHub uploader")
-    print(f"Repository: {ROOT}")
+    print("Garmin 步數資料上傳工具")
+    print(f"資料夾: {ROOT}")
     print()
 
     try:
         git_output(["rev-parse", "--is-inside-work-tree"])
-        run([python_command(), "build_dashboard.py"])
+        build_dashboard()
 
         if not has_changes():
-            print("No CSV or dashboard source changes found.")
-            print("Nothing was uploaded to GitHub.")
+            print("沒有偵測到新的 CSV 或 dashboard 相關變更。")
+            print("這次不會上傳到 GitHub。")
             return 0
 
         print()
-        print("Changes to upload:")
+        print("準備上傳這些變更:")
         print(git_output(["status", "--short", "--", *STAGE_PATHS]))
         print()
 
@@ -117,21 +126,24 @@ def main() -> int:
         branch = git_output(["branch", "--show-current"])
         if not branch:
             raise RuntimeError("Could not determine the current Git branch.")
+        if branch not in {"main", "master"}:
+            raise RuntimeError(f"目前在 {branch} 分支，請切回 main 後再上傳，否則 dashboard 不會更新。")
 
         run(["git", "push", "origin", branch])
         print()
-        print(f"Done. Uploaded commit to origin/{branch}.")
-        print("GitHub Actions will rebuild and publish the dashboard from the uploaded data.")
+        print(f"完成，上傳到 origin/{branch} 了。")
+        print("GitHub 會自動更新 dashboard，通常約 1 到 3 分鐘。")
+        print("查看結果: https://york-dada.github.io/garmin-steps-dashboard/")
         return 0
     except Exception as exc:
         print()
-        print(f"Upload failed: {exc}")
-        print("Please check the message above, then run this tool again.")
+        print(f"上傳失敗: {exc}")
+        print("請檢查上面的錯誤訊息，修正後再執行一次。")
         return 1
 
 
 if __name__ == "__main__":
     exit_code = main()
     if getattr(sys, "frozen", False):
-        input("\nPress Enter to close this window...")
+        input("\n看完訊息後，按 Enter 關閉視窗...")
     raise SystemExit(exit_code)

@@ -1,12 +1,28 @@
 from __future__ import annotations
 
 import datetime as dt
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+def find_repo_root() -> Path:
+    starts = [Path.cwd()]
+    if getattr(sys, "frozen", False):
+        starts.append(Path(sys.executable).resolve().parent)
+    else:
+        starts.append(Path(__file__).resolve().parent)
+
+    for start in starts:
+        for candidate in (start, *start.parents):
+            if (candidate / ".git").exists() and (candidate / "build_dashboard.py").exists():
+                return candidate
+
+    return Path.cwd()
+
+
+ROOT = find_repo_root()
 STAGE_PATHS = [
     "data/raw",
     "build_dashboard.py",
@@ -62,6 +78,13 @@ def make_commit_message() -> str:
     return f"Update {people} data for {today}"
 
 
+def python_command() -> str:
+    if not getattr(sys, "frozen", False):
+        return sys.executable
+
+    return shutil.which("python") or shutil.which("py") or "python"
+
+
 def main() -> int:
     print("Garmin dashboard GitHub uploader")
     print(f"Repository: {ROOT}")
@@ -69,7 +92,7 @@ def main() -> int:
 
     try:
         git_output(["rev-parse", "--is-inside-work-tree"])
-        run([sys.executable, "build_dashboard.py"])
+        run([python_command(), "build_dashboard.py"])
 
         if not has_changes():
             print("No data/dashboard source changes to upload.")

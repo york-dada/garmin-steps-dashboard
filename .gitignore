@@ -3,3 +3,8 @@
 __pycache__/
 *.py[cod]
 *.zip
+data/processed/
+site/index.html
+build/
+dist/
+*.spec

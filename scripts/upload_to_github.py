@@ -1,10 +1,18 @@
 from __future__ import annotations
 
+import csv  # Imported so PyInstaller bundles build_dashboard.py dependencies.
 import datetime as dt
+import html
 import importlib.util
+import io
+import json
 import subprocess
 import sys
+from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import Iterable
+
+_PYINSTALLER_HINTS = (asdict, csv, dataclass, html, io, Iterable, json)
 
 
 def find_repo_root() -> Path:
@@ -92,6 +100,7 @@ def build_dashboard() -> None:
         raise RuntimeError(f"Could not load {script_path}")
 
     module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     module.main()
 
